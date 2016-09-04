@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uexplugins>
+    <plugin className="com.haikesoft.topvpn.EUExTopVpn" uexName="uexTopVpn" >
+        <method name = "init" />
+        <method name = "setConfigInfo"/>
+        <method name = "login"/>
+        <method name = "logout" />
+        <method name = "getResInfo" />
+        <method name = "startService" />
+        <method name = "closeService" />
+        <method name = "queryState" />
+    </plugin>
+</uexplugins>
