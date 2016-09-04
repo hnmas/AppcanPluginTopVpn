@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/fonts/font-awesome.min.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-color.css">
+        <link rel="stylesheet" href="css/appcan.icon.css">
+        <link rel="stylesheet" href="css/appcan.control.css">
+    <script type="text/javascript">
+        /**
+         *判断字符串是否为空
+         */
+        function isEmpty(para)
+        {
+            if(typeof para == 'number')
+                return false;
+            else if (typeof para == 'undefined' || para == "" || para == null || para == 'null' || para == undefined || para == 'undefined')
+                return true;
+            else
+                return false;
+        }
+        /**
+         *判断字符串是否不为空
+         */
+        function isNotEmpty(para)
+        {
+            return !isEmpty(para);
+        }
+        
+        //
+        /*
+        window.uexOnload = function(type)
+        {
+            
+        }*/
+        //--------------------------------------------------------------------------------------------------------------
+        function initVPN()
+        {
+            showLog("准备调用initVPN事件....");
+            uexTopVpn.init();
+        }
+        //initVPN的同步回调
+        function onInitVPN(params)
+        {
+            showLog("initVPN 执行结果:" + params);
+        }
+        //设置VPN服务器信息---------------------------------------------------------------------------------------------
+        function  setConfigInfo()
+        {
+            //目前协议只支持https://，因此不再设置protocol参数
+            var param =
+            {
+                //protocol:"https://",
+                addr:"218.28.193.152",
+                port:443
+            }
+            //
+            uexTopVpn.setConfigInfo(JSON.stringify(param));
+        }
+        //setConfigInfo的同步回调
+        function  onSetConfigInfo(params)
+        {
+            showLog("setConfigInfo 执行结果:" + params);
+        }
+        //获取服务器设置异步回调之一，另一回主调是获取验证码
+        function  cbGetService(params)
+        {
+            showLog("setConfigInfo 执行后异步回调获取服务器配置:" + params);
+        }
+        function cbGetCaptcha(params)
+        {
+            showLog("setConfigInfo 执行后异步回调获取新验证码:" + params);
+        }
+        //vpn用户登录(目前只验证了0方式)
+        function login()
+        {
+            //认证方式，0：用户名和密码认证，1：国际(rsa)软证书认证，2：国际(rsa)硬证书认证, 3:国密(sm)硬证书认证
+            var type = 0;
+            var param =
+            {
+                //p12:"",
+                name:"szk",
+                pwd:"Topsec@123",
+                code:""
+            }
+            //
+            uexTopVpn.login(type, JSON.stringify(param));
+        }
+        //loginVOne的同步回调
+        function onLogin(params)
+        {
+            showLog("onLogin 执行结果:" + params);
+        }
+        function cbLogin(params)
+        {
+            showLog("onLogin 执行后异步回调结果:" + params);
+        }
+        //
+        //用户退出------------------------------------------------------------------------------------------------------
+        function logout()
+        {
+            uexTopVpn.logout();
+        }
+        function onLogout(params)
+        {
+            showLog("logout 执行结果:" + params);
+        }
+        function cbLogout(params)
+        {
+            showLog("logout 执行后异步回调:" + params);
+        }
+        //
+        //获取服务器资源
+        function getResInfo()
+        {
+            uexTopVpn.getResInfo();
+        }
+        function onGetResInfo(params)
+        {
+            showLog("getResInfo 执行结果:" + params);
+        }
+        function cbGetResInfo(params)
+        {
+            showLog("getResInfo 执行异步回调结果:" + params);
+        }
+
+        //
+        //启动VPN服务---------------------------------------------------------------------------------------------------
+        function startService()
+        {
+            uexTopVpn.startService();
+        }
+        function  onStartService(params)
+        {
+            showLog("startService 执行结果:" + params);
+        }
+        function cbStartService(params)
+        {
+            showLog("startService 执行后异步回调结果:" + params);
+        }
+        //
+        //关闭VPN服务---------------------------------------------------------------------------------------------------
+        function closeService()
+        {
+            uexTopVpn.closeService();
+        }
+        function onCloseService(params)
+        {
+            showLog("closeService 执行结果:" + params);
+        }
+        function  cbCloseService(params)
+        {
+            showLog("closeService 执行后异步回调结果:" + params);
+        }
+
+        //查询VPN运行状态
+        function queryState()
+        {
+            uexTopVpn.queryState();
+        }
+        function onQueryState(params)
+        {
+            showLog("queryState 执行结果:" + params);
+        }
+        function cbQueryState(params)
+        {
+            showLog("queryState 执行后异步回调结果:" + params);
+        }
+
+        function  cbOther(params)
+        {
+            showLog("未处理的服务端异步回调:" + params);
+        }
+
+        /**
+         * 输出日志信息
+         * msg:要输入的日志信息
+         */
+        function showLog(msg)
+        {
+            if(isNotEmpty(msg))
+            {
+                console.log(msg);
+            }
+        }
+    </script>
+    </head>
+    <body class="um-vp bc-bg" ontouchstart>
+        
+        <span>1.init接口VPN全局实例</span>
+        <div class="ub ub-ver uinn">
+            <div onclick="initVPN();" class="btn ub ub-ac bc-text-head ub-pc bc-btn uc-a1 b-bg" >
+               init接口
+            </div>
+        </div>
+        <br>
+
+        
+
+        <span>2.setConfigInfo设置VPN服务器信息</span>
+        <input class="btn" type="button" value="设置VPN服务器"  onclick="setConfigInfo()">
+        <br>
+
+        <span>3.loginVOne用户登录</span>
+        <!--此接口将打开一个自定义的输入框，并获取其操作后的返回值。-->
+        <input class="btn" type="button" value="用户登录(用户名密码方式)"  onclick="login();">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input class="btn" type="button" value="用户退出"  onclick="logout();">
+        <br>
+
+        <span>4.getResInfo获取可用资源</span>
+        <!--此接口将打开一个自定义的FragmentView添加到当前屏幕上。-->
+        <input class="btn" type="button" value="获取可用资源" onclick="getResInfo();">
+        <br>
+
+        <span>5.startService启动服务</span>
+        <!--此接口将从屏幕上移除刚刚打开的FragmentView。-->
+        <input class="btn" type="button" value="startService启动服务"  onclick="startService();"><br>
+
+        <span>6.closeService关闭服务</span>
+        <!--此接口将打开一个自定义的View添加到当前屏幕上。-->
+        <input class="btn" type="button" value="closeService关闭服务" onclick="closeService();"><br>
+
+        <span>7.查询VPN状态</span>
+        <!--此接口将打开一个自定义的View添加到当前屏幕上。-->
+        <input class="btn" type="button" value="查询VPN状态" onclick="queryState();"><br>
+        
+        <span>7.ajax请求内网</span>
+        <!--此接口将打开一个自定义的View添加到当前屏幕上。-->
+        <input class="btn" type="button" value="ajax请求内网" onclick="ajaxTest();"><br>
+        
+        <script src="js/appcan.js"></script>
+        <script src="js/appcan.control.js"></script>
+    </body>
+    <script>
+        appcan.ready(function() 
+       {
+            appcan.initBounce();
+            //
+            initVpnEvent();
+        })
+        
+        function initVpnEvent()
+        {
+            showLog("初始化事件....");
+            //同步回调定义(有回调参数)
+            uexTopVpn.onInit            = onInitVPN;
+            uexTopVpn.onSetConfigInfo   = onSetConfigInfo;
+            uexTopVpn.onLogin           = onLogin;
+            uexTopVpn.onLogout          = onLogout;
+            uexTopVpn.onGetResInfo      = onGetResInfo;
+            uexTopVpn.onStartService    = onStartService;
+            uexTopVpn.onCloseService    = onCloseService;
+            uexTopVpn.onQueryState      = onQueryState;
+            //
+            //异步回调定义(有回调参数)
+            uexTopVpn.cbGetService    = cbGetService;
+            uexTopVpn.cbGetCaptcha    = cbGetCaptcha;
+            uexTopVpn.cbLogin         = cbLogin;
+            uexTopVpn.cbLogout        = cbLogout;
+            uexTopVpn.cbGetResInfo    = cbGetResInfo;
+            uexTopVpn.cbQueryState    = cbQueryState;
+            uexTopVpn.cbStartService  = cbStartService;
+            uexTopVpn.cbCloseService  = cbCloseService;
+            uexTopVpn.cbOther         = cbOther;
+        }
+        
+       function ajaxTest () 
+      {
+          var url = "http://10.40.0.122:8002/jkzxoa/";
+          $.ajax(
+            {
+                url : url,
+                type : 'GET',
+                timeout : 6000,
+                success : function(data)
+              {
+                   showLog("成功请求结果:" + data); 
+                   
+                },
+                error : function(e)
+              {
+                   showLog("请求出错:" + e); 
+                }
+            });
+       }
+       //
+       appcan.button(".btn", "ani-act", function() 
+       {
+                
+        })
+ </script>
+</html>
